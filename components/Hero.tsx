@@ -1,38 +1,9 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { heroData } from "@/lib/data";
 
-const wordContainer = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.045,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const letterVariant = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
 export default function Hero() {
-  const [showTitle, setShowTitle] = useState(false);
-
-  useEffect(() => {
-    setShowTitle(true);
-  }, []);
-
-  const firstNameChars = useMemo(() => heroData.firstName.split(""), []);
-  const lastNameChars = useMemo(() => heroData.lastName.split(""), []);
-
   return (
     <section
       id={heroData.id}
@@ -49,39 +20,23 @@ export default function Hero() {
         </div>
 
         <h1 className="mb-8 font-serif text-[clamp(3.5rem,8vw,9rem)] leading-[0.92] tracking-[-0.02em]">
-          <AnimatePresence>
-            {showTitle ? (
-              <>
-                <motion.span
-                  key="first-name"
-                  variants={wordContainer}
-                  initial="hidden"
-                  animate="show"
-                  className="inline-block"
-                >
-                  {firstNameChars.map((char, index) => (
-                    <motion.span key={`first-${char}-${index}`} variants={letterVariant} className="inline-block">
-                      {char === " " ? "\u00A0" : char}
-                    </motion.span>
-                  ))}
-                </motion.span>
-                <br />
-                <motion.em
-                  key="last-name"
-                  variants={wordContainer}
-                  initial="hidden"
-                  animate="show"
-                  className="inline-block not-italic text-gold"
-                >
-                  {lastNameChars.map((char, index) => (
-                    <motion.span key={`last-${char}-${index}`} variants={letterVariant} className="inline-block">
-                      {char === " " ? "\u00A0" : char}
-                    </motion.span>
-                  ))}
-                </motion.em>
-              </>
-            ) : null}
-          </AnimatePresence>
+          <motion.span
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-block"
+          >
+            {heroData.firstName}
+          </motion.span>
+          <br />
+          <motion.span
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-block"
+          >
+            <em className="not-italic text-gold">{heroData.lastName}</em>
+          </motion.span>
         </h1>
 
         <p className="mb-12 max-w-[52ch] text-lg leading-[1.75] text-muted">{heroData.description}</p>
@@ -111,11 +66,16 @@ export default function Hero() {
       </div>
 
       <div className="pointer-events-none absolute bottom-20 right-12 hidden flex-col gap-8 text-right max-[899px]:hidden tb:flex">
-        {heroData.stats.map((stat) => (
-          <div key={stat.label}>
+        {heroData.stats.map((stat, index) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="font-serif text-5xl leading-none text-gold">{stat.value}</div>
             <div className="mt-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-muted">{stat.label}</div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

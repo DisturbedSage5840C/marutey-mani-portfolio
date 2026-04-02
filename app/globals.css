@@ -43,3 +43,7 @@ a {
   width: 100%;
   background: var(--border);
 }
+
+.proj-card:hover .proj-arrow {
+  opacity: 1;
+}

@@ -57,6 +57,7 @@ export type ExperienceData = {
 };
 
 export type ProjectItem = {
+  slug: string;
   number: string;
   name: string;
   description: string;
@@ -145,6 +146,7 @@ export const navItems: NavItem[] = [
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Research", href: "#research" },
+  { label: "Showcase", href: "/showcase" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -300,6 +302,7 @@ export const projectsData: ProjectsData = {
 
 export const projectItems: ProjectItem[] = [
   {
+    slug: "ilgc-tracker",
     number: "01",
     name: "University Housekeeping Management System",
     description:
@@ -314,6 +317,7 @@ export const projectItems: ProjectItem[] = [
     ],
   },
   {
+    slug: "rwe-tracker",
     number: "02",
     name: "RWE Tracker - Real-World Evidence Platform",
     description:

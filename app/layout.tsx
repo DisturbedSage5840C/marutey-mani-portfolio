@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     "Artificial Intelligence",
     "Portfolio",
     "Research",
+    "Showcase",
     "Graphic Design",
     "CyberSahyog",
     "EcoSentinels Foundation",
