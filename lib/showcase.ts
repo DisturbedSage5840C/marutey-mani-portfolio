@@ -9,8 +9,8 @@ export interface ShowcaseItem {
 }
 
 export const showcaseCategories = [
-  { id: "design-magazines", label: "Design Magazines" },
-  { id: "photos", label: "Photos" },
+  { id: "design-magazines", label: "Magazines" },
+  { id: "photos", label: "Design Art" },
   { id: "photography", label: "Photography" },
   { id: "reels", label: "Reels" },
   { id: "videography", label: "Videography" },
