@@ -138,21 +138,27 @@ export default function Showcase() {
                     onHoverEnd={() => setHoveredItem(null)}
                     style={{ position: "relative", overflow: "hidden", cursor: "pointer" }}
                   >
-                    <div
-                      style={{
-                        aspectRatio: item.aspectRatio,
-                        background: "#111111",
-                        border: "1px solid rgba(255,255,255,0.06)",
-                        position: "relative",
-                        overflow: "hidden",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        transition: "border-color 0.25s ease, box-shadow 0.25s ease",
-                        boxShadow: hoveredItem === item.id ? "0 20px 50px rgba(0,0,0,0.35)" : "none",
-                        borderColor: hoveredItem === item.id ? "rgba(200,169,110,0.35)" : "rgba(255,255,255,0.06)",
-                      }}
+                    <a
+                      href={item.href}
+                      target={item.href ? "_blank" : undefined}
+                      rel={item.href ? "noopener noreferrer" : undefined}
+                      style={{ display: "block" }}
                     >
+                      <div
+                        style={{
+                          aspectRatio: item.aspectRatio,
+                          background: "#111111",
+                          border: "1px solid rgba(255,255,255,0.06)",
+                          position: "relative",
+                          overflow: "hidden",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          transition: "border-color 0.25s ease, box-shadow 0.25s ease",
+                          boxShadow: hoveredItem === item.id ? "0 20px 50px rgba(0,0,0,0.35)" : "none",
+                          borderColor: hoveredItem === item.id ? "rgba(200,169,110,0.35)" : "rgba(255,255,255,0.06)",
+                        }}
+                      >
                       <div
                         style={{
                           position: "absolute",
@@ -175,7 +181,7 @@ export default function Showcase() {
                           zIndex: 1,
                         }}
                       >
-                        {item.type === "video" ? "▶ Video" : "◻ Image"} · Placeholder
+                        {item.type === "video" ? "▶ Video" : item.type === "document" ? "▣ Document" : "◻ Image"} · Placeholder
                       </div>
 
                       <motion.div
@@ -214,7 +220,8 @@ export default function Showcase() {
                           {showcaseCategories.find((c) => c.id === item.category)?.label}
                         </div>
                       </motion.div>
-                    </div>
+                      </div>
+                    </a>
                   </motion.div>
                 ))}
               </div>

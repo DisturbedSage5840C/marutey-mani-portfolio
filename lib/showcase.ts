@@ -3,9 +3,10 @@ export interface ShowcaseItem {
   category: "design-magazines" | "photos" | "photography" | "reels" | "videography";
   title: string;
   description: string;
-  type: "image" | "video";
+  type: "image" | "video" | "document";
   placeholder: true;
   aspectRatio: "16/9" | "9/16" | "4/5" | "1/1" | "3/4";
+  href?: string;
 }
 
 export const showcaseCategories = [
@@ -17,10 +18,12 @@ export const showcaseCategories = [
 ] as const;
 
 export const showcaseItems: ShowcaseItem[] = [
-  { id: "dm-01", category: "design-magazines", title: "Editorial Spread 01", description: "Design magazine layout", type: "image", placeholder: true, aspectRatio: "3/4" },
-  { id: "dm-02", category: "design-magazines", title: "Editorial Spread 02", description: "Design magazine layout", type: "image", placeholder: true, aspectRatio: "3/4" },
-  { id: "dm-03", category: "design-magazines", title: "Editorial Spread 03", description: "Design magazine layout", type: "image", placeholder: true, aspectRatio: "4/5" },
-  { id: "dm-04", category: "design-magazines", title: "Editorial Spread 04", description: "Design magazine layout", type: "image", placeholder: true, aspectRatio: "3/4" },
+  { id: "dm-01", category: "design-magazines", title: "REECE AI", description: "Presentation document", type: "document", placeholder: true, aspectRatio: "3/4", href: "/showcase/magazines/mag-01-reece-ai.pptx" },
+  { id: "dm-02", category: "design-magazines", title: "Movie Poster", description: "Magazine/Poster PDF", type: "document", placeholder: true, aspectRatio: "3/4", href: "/showcase/magazines/mag-02-movie-poster.pdf" },
+  { id: "dm-03", category: "design-magazines", title: "GDS Final", description: "Magazine document", type: "document", placeholder: true, aspectRatio: "4/5", href: "/showcase/magazines/mag-03-gds-final.pdf" },
+  { id: "dm-04", category: "design-magazines", title: "TeamBBC Plaksha", description: "Magazine document", type: "document", placeholder: true, aspectRatio: "3/4", href: "/showcase/magazines/mag-04-teambbc.pdf" },
+  { id: "dm-05", category: "design-magazines", title: "Plaksha MUN & Debate", description: "Magazine document", type: "document", placeholder: true, aspectRatio: "3/4", href: "/showcase/magazines/mag-05-plaksha-mun.pdf" },
+  { id: "dm-06", category: "design-magazines", title: "World of AI", description: "Magazine document", type: "document", placeholder: true, aspectRatio: "4/5", href: "/showcase/magazines/mag-06-world-of-ai.pdf" },
   { id: "ph-01", category: "photos", title: "Photo 01", description: "Photography work", type: "image", placeholder: true, aspectRatio: "4/5" },
   { id: "ph-02", category: "photos", title: "Photo 02", description: "Photography work", type: "image", placeholder: true, aspectRatio: "1/1" },
   { id: "ph-03", category: "photos", title: "Photo 03", description: "Photography work", type: "image", placeholder: true, aspectRatio: "16/9" },
