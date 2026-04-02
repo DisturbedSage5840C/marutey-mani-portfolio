@@ -51,7 +51,18 @@ export default function Research() {
               className="flex items-start justify-between gap-12 border-t border-border py-7 max-[899px]:flex-col max-[899px]:gap-4"
             >
               <div>
-                <h3 className="max-w-[60ch] font-serif text-[1.2rem] font-normal">{item.title}</h3>
+                {item.link ? (
+                  <a
+                    href={item.link}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                    className="transition-colors duration-200 hover:text-gold"
+                  >
+                    <h3 className="max-w-[60ch] font-serif text-[1.2rem] font-normal">{item.title}</h3>
+                  </a>
+                ) : (
+                  <h3 className="max-w-[60ch] font-serif text-[1.2rem] font-normal">{item.title}</h3>
+                )}
                 {item.meta ? (
                   <p className="mt-1.5 font-mono text-[0.65rem] tracking-[0.08em] text-muted">{item.meta}</p>
                 ) : null}

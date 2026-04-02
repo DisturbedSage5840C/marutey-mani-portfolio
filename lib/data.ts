@@ -76,6 +76,8 @@ export type ResearchItem = {
   title: string;
   meta?: string;
   status: "Published" | "Ongoing" | "Complete";
+  link?: string;
+  external?: boolean;
 };
 
 export type ResearchData = {
@@ -345,6 +347,8 @@ export const researchItems: ResearchItem[] = [
     title: "How Crypto Grew Up: Why It Might Finally Belong Inside Government",
     meta: "The Shillong Times - November 2025",
     status: "Published",
+    link: "https://theshillongtimes.com/2025/11/27/how-crypto-grew-up-why-it-might-finally-belong-inside-government/",
+    external: true,
   },
   {
     title: "Cryptocurrency & Dark Web Financial Cybercrime",

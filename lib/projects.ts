@@ -34,7 +34,7 @@ export const projects: Project[] = [
   {
     slug: "ilgc-tracker",
     number: "01",
-    name: "ILGC Tracker",
+    name: "University Housekeeping Management System",
     tagline: "AI-Powered Campus Housekeeping & Hygiene Compliance Tracker",
     summary:
       "A full-stack AI system solving a persistent campus hygiene problem - essential supplies like soap and tissue going unrefilled for days. Gives residents an instant way to report shortages, uses ML to auto-categorize and prioritize complaints, and gives administrators real-time visibility into compliance gaps.",
