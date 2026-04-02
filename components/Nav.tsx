@@ -1,0 +1,23 @@
+import { navItems } from "@/lib/data";
+
+export default function Nav() {
+  return (
+    <nav className="fixed inset-x-0 top-0 z-50 border-b border-border bg-[rgba(10,10,10,0.85)] px-6 py-5 backdrop-blur-md tb:px-12">
+      <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between">
+        <div className="font-mono text-xs uppercase tracking-[0.12em] text-gold">M. Mani</div>
+        <ul className="flex list-none items-center gap-10 max-[599px]:hidden">
+          {navItems.map((item) => (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-muted transition-colors duration-200 hover:text-text"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+}
