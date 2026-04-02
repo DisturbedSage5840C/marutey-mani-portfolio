@@ -77,6 +77,26 @@ It showcases:
 
 ---
 
+## Live Website
+
+This portfolio is live on Vercel:
+
+- Production URL: https://marutey-mani-portfolio.vercel.app
+- Platform: Vercel (Next.js optimized hosting)
+
+### Deployment Workflow
+
+- The repository is connected to Vercel.
+- Every push to the `main` branch automatically triggers a fresh production deployment.
+- Vercel handles SSL/HTTPS, global CDN delivery, and build/runtime optimization.
+
+### Notes
+
+- If new media is added to `public/`, a normal push to GitHub is enough to publish it live.
+- If needed, a custom domain can be connected directly from the Vercel project dashboard.
+
+---
+
 ## Local Setup
 
 ### 1. Clone
