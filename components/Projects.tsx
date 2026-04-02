@@ -46,23 +46,25 @@ export default function Projects() {
           <motion.div key={project.number} custom={index * 0.1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
             <Link href={`/projects/${project.slug}`} className="block">
               <motion.article
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -6 }}
                 transition={{ duration: 0.3 }}
-                className="proj-card relative bg-bg p-10 transition-colors duration-200 hover:bg-surface2"
+                className="proj-card depth-hover relative bg-bg p-10 transition-colors duration-200 hover:bg-surface2"
               >
                 <div className="mb-6 font-mono text-[0.65rem] tracking-[0.15em] text-muted">{project.number}</div>
                 <h3 className="mb-4 font-serif text-[1.8rem] font-normal leading-[1.2]">{project.name}</h3>
                 <p className="mb-6 text-[0.88rem] leading-[1.75] text-muted">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
-                  {project.stack.map((item) => (
-                    <span
+                  {project.stack.map((item, chipIndex) => (
+                    <motion.span
                       key={`${project.number}-${item.label}`}
+                      whileHover={{ y: -1 }}
+                      transition={{ duration: 0.2, delay: chipIndex * 0.01 }}
                       className={`border px-2.5 py-1 font-mono text-[0.62rem] tracking-[0.08em] ${
                         item.accent ? "border-sage/40 text-sage" : "border-border text-muted"
                       }`}
                     >
                       {item.label}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
                 <div

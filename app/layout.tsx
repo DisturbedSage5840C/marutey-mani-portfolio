@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, IBM_Plex_Mono, Syne } from "next/font/google";
 import "./globals.css";
+import CursorFx from "@/components/CursorFx";
 import Nav from "@/components/Nav";
 import { person } from "@/lib/data";
 
@@ -72,6 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${serif.variable} ${sans.variable} ${mono.variable} bg-bg text-text antialiased`}>
+        <CursorFx />
         <Nav />
         {children}
       </body>

@@ -9,6 +9,18 @@ export default function Hero() {
       id={heroData.id}
       className="relative flex min-h-screen flex-col justify-end overflow-hidden px-6 pb-20 pt-24 tb:px-12"
     >
+      <motion.div
+        aria-hidden="true"
+        className="glow-orb absolute right-[15%] top-[18%] h-64 w-64 rounded-full bg-gold/40"
+        animate={{ opacity: [0.16, 0.28, 0.16] }}
+        transition={{ duration: 7, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="glow-orb sage absolute left-[10%] top-[32%] h-52 w-52 rounded-full bg-sage/35"
+        animate={{ opacity: [0.12, 0.24, 0.12] }}
+        transition={{ duration: 8.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+      />
       <div className="pointer-events-none absolute left-0 top-[8vh] select-none whitespace-nowrap font-serif text-[clamp(8rem,18vw,22rem)] leading-none text-white/5">
         {heroData.ghostText}
       </div>
@@ -44,14 +56,16 @@ export default function Hero() {
         <div className="flex flex-wrap items-center gap-4">
           {heroData.ctas.map((cta) => {
             const shared =
-              "inline-flex items-center justify-center px-8 py-3.5 font-mono text-xs uppercase tracking-[0.12em] transition-all duration-200";
+              "cta-shimmer inline-flex items-center justify-center px-8 py-3.5 font-mono text-xs uppercase tracking-[0.12em] transition-all duration-300";
 
             return (
-              <a
+              <motion.a
                 key={cta.label}
                 href={cta.href}
                 target={cta.external ? "_blank" : undefined}
                 rel={cta.external ? "noopener noreferrer" : undefined}
+                whileHover={{ y: -2, scale: 1.01 }}
+                whileTap={{ scale: 0.985 }}
                 className={
                   cta.variant === "primary"
                     ? `${shared} bg-gold text-bg hover:opacity-85`
@@ -59,7 +73,7 @@ export default function Hero() {
                 }
               >
                 {cta.label}
-              </a>
+              </motion.a>
             );
           })}
         </div>

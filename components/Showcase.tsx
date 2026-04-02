@@ -133,6 +133,7 @@ export default function Showcase() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: itemIdx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    whileHover={{ y: -4, scale: 1.01 }}
                     onHoverStart={() => setHoveredItem(item.id)}
                     onHoverEnd={() => setHoveredItem(null)}
                     style={{ position: "relative", overflow: "hidden", cursor: "pointer" }}
@@ -147,6 +148,9 @@ export default function Showcase() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        transition: "border-color 0.25s ease, box-shadow 0.25s ease",
+                        boxShadow: hoveredItem === item.id ? "0 20px 50px rgba(0,0,0,0.35)" : "none",
+                        borderColor: hoveredItem === item.id ? "rgba(200,169,110,0.35)" : "rgba(255,255,255,0.06)",
                       }}
                     >
                       <div
