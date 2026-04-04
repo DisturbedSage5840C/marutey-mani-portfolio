@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, IBM_Plex_Mono, Syne } from "next/font/google";
 import "./globals.css";
-import CursorFx from "@/components/CursorFx";
+import ClientFx from "@/components/providers/ClientFx";
 import Nav from "@/components/Nav";
+import RouteTransitionProvider from "@/components/providers/RouteTransitionProvider";
+import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import { person } from "@/lib/data";
 
 const serif = DM_Serif_Display({
@@ -73,9 +75,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${serif.variable} ${sans.variable} ${mono.variable} bg-bg text-text antialiased`}>
-        <CursorFx />
-        <Nav />
-        {children}
+        <SmoothScrollProvider>
+          <ClientFx />
+          <Nav />
+          <RouteTransitionProvider>{children}</RouteTransitionProvider>
+        </SmoothScrollProvider>
       </body>
     </html>
   );
