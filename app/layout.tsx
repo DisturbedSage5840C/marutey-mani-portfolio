@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, IBM_Plex_Mono, Syne } from "next/font/google";
+import { DM_Serif_Display, Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
-import ClientFx from "@/components/providers/ClientFx";
+import dynamic from "next/dynamic";
+import { LenisProvider } from "@/components/providers/LenisProvider";
+import LoadingScreen from "@/components/ui/LoadingScreen";
 import Nav from "@/components/Nav";
-import RouteTransitionProvider from "@/components/providers/RouteTransitionProvider";
-import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
+import PageTransition from "@/components/providers/PageTransition";
+import CustomCursor from "@/components/ui/CustomCursor";
 import { person } from "@/lib/data";
+
+const SceneBackground = dynamic(() => import("@/components/three/SceneBackground"), {
+  ssr: false,
+});
 
 const serif = DM_Serif_Display({
   subsets: ["latin"],
@@ -13,15 +19,15 @@ const serif = DM_Serif_Display({
   variable: "--font-serif",
 });
 
-const sans = Syne({
+const sans = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-sans",
 });
 
-const mono = IBM_Plex_Mono({
+const mono = Space_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "700"],
   variable: "--font-mono",
 });
 
@@ -74,12 +80,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${serif.variable} ${sans.variable} ${mono.variable} bg-bg text-text antialiased`}>
-        <SmoothScrollProvider>
-          <ClientFx />
+      <body className={`${sans.className} ${serif.variable} ${sans.variable} ${mono.variable} bg-bg text-text antialiased`}>
+        <SceneBackground />
+        <LoadingScreen />
+        <LenisProvider>
           <Nav />
-          <RouteTransitionProvider>{children}</RouteTransitionProvider>
-        </SmoothScrollProvider>
+          <PageTransition>{children}</PageTransition>
+        </LenisProvider>
+        <CustomCursor />
       </body>
     </html>
   );

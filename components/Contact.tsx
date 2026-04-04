@@ -1,138 +1,135 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useMemo, useRef } from "react";
+import * as THREE from "three";
 import { contactData } from "@/lib/data";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-type TrailPoint = {
-  id: number;
-  x: number;
-  y: number;
-  createdAt: number;
-};
+gsap.registerPlugin(ScrollTrigger);
 
-type Burst = {
-  id: number;
-  x: number;
-  y: number;
-  angle: number;
-  distance: number;
-};
-
-const COLORS = ["#a78bfa", "#22d3ee", "#ec4899"];
+const ContactRipple = dynamic(() => import("@/components/three/ContactRipple"), { ssr: false });
 
 export default function Contact() {
+  const reducedMotion = useReducedMotion();
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const wordRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  const ripplesRef = useRef(Array.from({ length: 8 }, () => new THREE.Vector2(-10, -10)));
+  const timesRef = useRef(Array.from({ length: 8 }, () => -10));
+  const rippleIdx = useRef(0);
+
   const headingWords = useMemo(() => `${contactData.headingStart} ${contactData.headingEmphasis}`.split(" "), []);
-  const [trail, setTrail] = useState<TrailPoint[]>([]);
-  const [bursts, setBursts] = useState<Burst[]>([]);
 
-  const idRef = useRef(0);
+  useEffect(() => {
+    if (!headingRef.current) return;
 
-  const pushTrail = (x: number, y: number) => {
-    idRef.current += 1;
-    const now = Date.now();
-    setTrail((prev) => [...prev, { id: idRef.current, x, y, createdAt: now }].slice(-8));
+    if (reducedMotion) {
+      wordRefs.current.forEach((word) => {
+        if (word) {
+          word.style.opacity = "1";
+          word.style.transform = "translateY(0px)";
+        }
+      });
+      return;
+    }
 
-    window.setTimeout(() => {
-      setTrail((prev) => prev.filter((p) => p.id !== idRef.current));
-    }, 500);
-  };
+    const tween = gsap.fromTo(
+      wordRefs.current,
+      { y: 80, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "expo.out",
+        stagger: 0.08,
+        scrollTrigger: { trigger: headingRef.current, start: "top 80%" },
+      }
+    );
 
-  const spawnBurst = (x: number, y: number) => {
-    const created = Array.from({ length: 10 }, (_, index) => ({
-      id: Date.now() + index,
-      x,
-      y,
-      angle: (Math.PI * 2 * index) / 10,
-      distance: 40 + Math.random() * 40,
-    }));
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
+  }, [reducedMotion]);
 
-    setBursts((prev) => [...prev, ...created]);
-    window.setTimeout(() => {
-      setBursts((prev) => prev.filter((item) => !created.some((n) => n.id === item.id)));
-    }, 620);
-  };
+  const isMobile = typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   return (
     <section
       id={contactData.id}
-      className="relative mx-auto flex min-h-screen max-w-[1400px] flex-col justify-center border-t border-border px-6 py-28 tb:px-12"
-      onMouseMove={(event) => pushTrail(event.clientX, event.clientY)}
-      onClick={(event) => spawnBurst(event.clientX, event.clientY)}
+      ref={sectionRef}
+      className="relative z-[1] mx-auto flex min-h-screen max-w-[1400px] flex-col justify-center overflow-hidden border-t border-border px-6 py-28 tb:px-12"
+      onClick={(event) => {
+        if (reducedMotion || isMobile || !sectionRef.current) return;
+        const rect = sectionRef.current.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width;
+        const y = 1 - (event.clientY - rect.top) / rect.height;
+        const i = rippleIdx.current % 8;
+        ripplesRef.current[i] = new THREE.Vector2(x, y);
+        timesRef.current[i] = performance.now() / 1000;
+        rippleIdx.current += 1;
+      }}
     >
-      <div className="mb-4 flex items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-gold">
+      {!isMobile ? <ContactRipple ripplesRef={ripplesRef} timesRef={timesRef} /> : <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#7c3aed]/20 to-[#06b6d4]/15" />}
+
+      <div className="relative z-10 mb-4 flex items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-gold">
         <span>{contactData.tag}</span>
         <span className="h-px w-16 bg-border" />
       </div>
 
-      <h2 className="mb-12 font-serif text-[clamp(3rem,7vw,8rem)] italic leading-[0.95] tracking-[-0.02em]">
+      <h2 ref={headingRef} className="relative z-10 mb-12 text-[clamp(3rem,7vw,8rem)] font-bold leading-[0.95] tracking-[-0.02em] text-[#f8f8f8]">
         {headingWords.map((word, index) => (
-          <motion.span
+          <span
             key={`${word}-${index}`}
+            ref={(node) => {
+              wordRefs.current[index] = node;
+            }}
             className="mr-3 inline-block"
-            initial={{ y: 60, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, delay: index * 0.08 }}
           >
             {word}
-          </motion.span>
+          </span>
         ))}
       </h2>
 
-      <div className="flex flex-wrap gap-4">
+      <div className="relative z-10 flex flex-wrap gap-x-6 gap-y-6">
         {contactData.links.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            target={link.external ? "_blank" : undefined}
-            rel={link.external ? "noopener noreferrer" : undefined}
-            className="group relative inline-flex h-16 w-16 items-center justify-center rounded-full border border-border bg-surface/60 font-mono text-xs uppercase tracking-[0.12em] text-muted transition duration-300 hover:text-gold"
-            data-cursor="hover"
-            onMouseMove={(event) => {
-              const node = event.currentTarget;
-              const rect = node.getBoundingClientRect();
-              const dx = (event.clientX - (rect.left + rect.width / 2)) * 0.4;
-              const dy = (event.clientY - (rect.top + rect.height / 2)) * 0.4;
-              node.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(1.1)`;
-            }}
-            onMouseLeave={(event) => {
-              event.currentTarget.style.transition = "transform 0.4s ease";
-              event.currentTarget.style.transform = "translate3d(0,0,0) scale(1)";
-            }}
-            aria-label={link.label}
-            title={link.label}
-          >
-            <span className="text-center text-[0.5rem] leading-tight">{link.label}</span>
-          </a>
+          <div key={link.label} className="-m-5 p-5">
+            <a
+              href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+              data-hover="true"
+              className="inline-flex h-[72px] w-[72px] flex-col items-center justify-center rounded-xl border border-white/15 bg-white/5 text-center font-mono text-[10px] uppercase tracking-[0.09em] text-[rgba(248,248,248,0.75)]"
+              onMouseMove={(event) => {
+                if (reducedMotion) return;
+                const btn = event.currentTarget;
+                const rect = btn.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dx = (event.clientX - cx) * 0.42;
+                const dy = (event.clientY - cy) * 0.42;
+                gsap.to(btn, { x: dx, y: dy, scale: 1.12, duration: 0.3, ease: "power2.out" });
+                const icon = btn.querySelector("svg");
+                if (icon) gsap.to(icon, { rotate: dx * 0.5, duration: 0.3 });
+              }}
+              onMouseLeave={(event) => {
+                gsap.to(event.currentTarget, { x: 0, y: 0, scale: 1, duration: 0.6, ease: "elastic.out(1, 0.5)" });
+                const icon = event.currentTarget.querySelector("svg");
+                if (icon) gsap.to(icon, { rotate: 0, duration: 0.6 });
+              }}
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current">
+                <path d="M12 2l2.4 7.6H22l-6.2 4.6 2.4 7.8L12 17.4 5.8 22l2.4-7.8L2 9.6h7.6z" />
+              </svg>
+              <span>{link.label}</span>
+            </a>
+          </div>
         ))}
       </div>
-
-      {trail.map((point, index) => (
-        <span
-          key={point.id}
-          className="pointer-events-none fixed z-40 h-1.5 w-1.5 rounded-full"
-          style={{
-            left: point.x - 3,
-            top: point.y - 3,
-            backgroundColor: COLORS[index % COLORS.length],
-            animation: "trail-fade 500ms ease forwards",
-          }}
-        />
-      ))}
-
-      {bursts.map((burst) => (
-        <span
-          key={burst.id}
-          className="pointer-events-none fixed z-40 h-1.5 w-1.5 rounded-full bg-white"
-          style={{
-            left: burst.x - 3,
-            top: burst.y - 3,
-            transform: `translate(${Math.cos(burst.angle) * burst.distance}px, ${Math.sin(burst.angle) * burst.distance}px)`,
-            animation: "burst-fade 600ms ease forwards",
-          }}
-        />
-      ))}
     </section>
   );
 }

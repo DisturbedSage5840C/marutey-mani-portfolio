@@ -1,133 +1,155 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
+import gsap from "gsap";
+import { useEffect, useMemo, useRef } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-type Point = {
+type CursorPoint = {
   x: number;
   y: number;
 };
 
+type TrailPoint = {
+  x: number;
+  y: number;
+  opacity: number;
+  scale: number;
+};
+
+const TRAIL_COUNT = 12;
+
 export default function CustomCursor() {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-  const [isVisible, setIsVisible] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const trailRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  const dotRef = useRef<HTMLDivElement | null>(null);
-  const ringRef = useRef<HTMLDivElement | null>(null);
+  const mouse = useRef<CursorPoint>({ x: 0, y: 0 });
+  const ring = useRef<CursorPoint>({ x: 0, y: 0 });
+  const rafId = useRef<number | null>(null);
 
-  const targetRef = useRef<Point>({ x: -100, y: -100 });
-  const ringRefPos = useRef<Point>({ x: -100, y: -100 });
+  const trailPoints = useRef<TrailPoint[]>(
+    Array.from({ length: TRAIL_COUNT }, () => ({ x: 0, y: 0, opacity: 0, scale: 1 }))
+  );
 
-  const hoverMode = useRef<"default" | "hover" | "text">("default");
-  const rafRef = useRef<number | null>(null);
+  const trailNodes = useMemo(
+    () => Array.from({ length: TRAIL_COUNT }, (_, i) => i),
+    []
+  );
 
   useEffect(() => {
-    if (isMobile) return;
+    if (typeof window === "undefined" || "ontouchstart" in window || reducedMotion) return;
 
-    const markInteractive = () => {
-      const nodes = document.querySelectorAll<HTMLElement>("a, button, .proj-card");
-      nodes.forEach((node) => {
-        if (!node.dataset.cursor) node.dataset.cursor = "hover";
-      });
-    };
-
-    markInteractive();
-    const observer = new MutationObserver(markInteractive);
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    const updateMode = (target: EventTarget | null) => {
-      if (!(target instanceof HTMLElement)) {
-        hoverMode.current = "default";
-        return;
-      }
-      const textEl = target.closest("[data-cursor='text']");
-      const hoverEl = target.closest("[data-cursor='hover']");
-      if (textEl) {
-        hoverMode.current = "text";
-      } else if (hoverEl) {
-        hoverMode.current = "hover";
-      } else {
-        hoverMode.current = "default";
-      }
-    };
+    const previousCursor = document.body.style.cursor;
+    document.body.style.cursor = "none";
 
     const onMove = (event: MouseEvent) => {
-      const point = { x: event.clientX, y: event.clientY };
-      targetRef.current = point;
-      setIsVisible(true);
+      mouse.current.x = event.clientX;
+      mouse.current.y = event.clientY;
+    };
 
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${point.x - 4}px, ${point.y - 4}px, 0)`;
+    const onOver = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const hovered = target?.closest("a, button, [data-hover]");
+      if (!dotRef.current || !ringRef.current) return;
+
+      if (hovered) {
+        ringRef.current.style.width = "64px";
+        ringRef.current.style.height = "64px";
+        ringRef.current.style.borderColor = "#22d3ee";
+        dotRef.current.style.opacity = "0";
+      } else {
+        ringRef.current.style.width = "40px";
+        ringRef.current.style.height = "40px";
+        ringRef.current.style.borderColor = "rgba(168, 85, 247, 0.6)";
+        dotRef.current.style.opacity = "1";
       }
-
-      updateMode(event.target);
     };
 
     const onDown = () => {
       if (!dotRef.current) return;
-      dotRef.current.style.transition = "transform 120ms ease";
-      const p = targetRef.current;
-      dotRef.current.style.transform = `translate3d(${p.x - 4}px, ${p.y - 4}px, 0) scale(0.5)`;
-      window.setTimeout(() => {
-        if (!dotRef.current) return;
-        dotRef.current.style.transform = `translate3d(${p.x - 4}px, ${p.y - 4}px, 0) scale(1)`;
-      }, 120);
+      gsap.to(dotRef.current, { scale: 0.5, duration: 0.12, ease: "power2.out" });
     };
 
-    const animate = () => {
-      const target = targetRef.current;
-      const ring = ringRefPos.current;
+    const onUp = () => {
+      if (!dotRef.current) return;
+      gsap.to(dotRef.current, { scale: 1, duration: 0.18, ease: "power2.out" });
+    };
 
-      ring.x += (target.x - ring.x) * 0.12;
-      ring.y += (target.y - ring.y) * 0.12;
+    const frame = () => {
+      if (!dotRef.current || !ringRef.current) return;
 
-      if (ringRef.current) {
-        let transform = `translate3d(${ring.x - 18}px, ${ring.y - 18}px, 0)`;
-        let opacity = 1;
+      ring.current.x += (mouse.current.x - ring.current.x) * 0.1;
+      ring.current.y += (mouse.current.y - ring.current.y) * 0.1;
 
-        if (hoverMode.current === "hover") {
-          transform += " scale(2.2)";
-          opacity = 0.6;
-        }
+      dotRef.current.style.left = `${mouse.current.x}px`;
+      dotRef.current.style.top = `${mouse.current.y}px`;
+      ringRef.current.style.left = `${ring.current.x}px`;
+      ringRef.current.style.top = `${ring.current.y}px`;
 
-        if (hoverMode.current === "text") {
-          transform += " scaleX(0.3) scaleY(1.5)";
-        }
+      trailPoints.current.unshift({ x: mouse.current.x, y: mouse.current.y, opacity: 0.5, scale: 1 });
+      trailPoints.current.pop();
 
-        ringRef.current.style.transform = transform;
-        ringRef.current.style.opacity = String(opacity);
+      for (let i = 0; i < trailPoints.current.length; i += 1) {
+        const p = trailPoints.current[i];
+        p.opacity *= 0.85;
+        p.scale *= 0.98;
+
+        const node = trailRefs.current[i];
+        if (!node) continue;
+        node.style.left = `${p.x}px`;
+        node.style.top = `${p.y}px`;
+        node.style.opacity = `${p.opacity}`;
+        node.style.transform = `translate(-50%, -50%) scale(${p.scale})`;
       }
 
-      rafRef.current = window.requestAnimationFrame(animate);
+      rafId.current = window.requestAnimationFrame(frame);
     };
 
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mousedown", onDown);
-    rafRef.current = window.requestAnimationFrame(animate);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    document.addEventListener("mouseover", onOver, { passive: true });
+    window.addEventListener("mousedown", onDown, { passive: true });
+    window.addEventListener("mouseup", onUp, { passive: true });
+    rafId.current = window.requestAnimationFrame(frame);
 
     return () => {
-      observer.disconnect();
+      document.body.style.cursor = previousCursor;
       window.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseover", onOver);
       window.removeEventListener("mousedown", onDown);
-      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("mouseup", onUp);
+      if (rafId.current) window.cancelAnimationFrame(rafId.current);
     };
-  }, [isMobile]);
+  }, [reducedMotion]);
 
-  if (isMobile) return null;
+  if (typeof window !== "undefined" && ("ontouchstart" in window || reducedMotion)) {
+    return null;
+  }
 
   return (
     <>
+      {trailNodes.map((index) => (
+        <div
+          key={index}
+          ref={(node) => {
+            trailRefs.current[index] = node;
+          }}
+          aria-hidden="true"
+          className="pointer-events-none fixed z-[9997] h-1 w-1 rounded-full bg-purple-500/50"
+          style={{ transform: "translate(-50%, -50%)" }}
+        />
+      ))}
       <div
         ref={dotRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9998] h-2 w-2 rounded-full bg-white mix-blend-difference"
-        style={{ opacity: isVisible ? 1 : 0 }}
+        className="pointer-events-none fixed z-[9997] h-2 w-2 rounded-full bg-[#a855f7]"
+        style={{ transform: "translate(-50%, -50%)" }}
       />
       <div
         ref={ringRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9997] h-9 w-9 rounded-full border-[1.5px] border-white/60 mix-blend-difference transition-opacity"
-        style={{ opacity: isVisible ? 1 : 0 }}
+        className="pointer-events-none fixed z-[9997] h-10 w-10 rounded-full border-[1.5px] border-[rgba(168,85,247,0.6)]"
+        style={{ transform: "translate(-50%, -50%)", transition: "width 0.3s, height 0.3s" }}
       />
     </>
   );
