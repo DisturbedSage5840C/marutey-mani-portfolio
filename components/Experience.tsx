@@ -100,7 +100,7 @@ function ExperienceCard({
 
   return (
     <article
-      className="relative h-[480px] w-[360px] rounded-2xl border border-white/10 p-7"
+      className="relative flex h-[480px] w-[360px] flex-col overflow-hidden rounded-2xl border border-white/10 p-7"
       style={{
         background: "rgba(255,255,255,0.03)",
         backdropFilter: "blur(8px)",
@@ -119,13 +119,13 @@ function ExperienceCard({
         gsap.to(event.currentTarget, { rotateX: 0, rotateY: 0, scale: 1, duration: 0.55, ease: "power2.out" });
       }}
     >
-      <div ref={indexRef} className="mb-4 font-mono text-xs tracking-[0.2em] text-[#a78bfa]">
+      <div ref={indexRef} className="mb-4 shrink-0 font-mono text-xs tracking-[0.2em] text-[#a78bfa]">
         {String(index + 1).padStart(2, "0")}
       </div>
-      <h3 className="text-2xl font-semibold text-[#f8f8f8]">{org}</h3>
-      <p className="mt-1 font-mono text-xs uppercase tracking-[0.08em] text-[rgba(248,248,248,0.55)]">{period}</p>
+      <h3 className="shrink-0 text-2xl font-semibold text-[#f8f8f8]">{org}</h3>
+      <p className="mt-1 shrink-0 font-mono text-xs uppercase tracking-[0.08em] text-[rgba(248,248,248,0.55)]">{period}</p>
       <span
-        className="mt-3 inline-flex rounded-full border px-3 py-1 text-xs font-semibold"
+        className="mt-3 inline-flex shrink-0 self-start rounded-full border px-3 py-1 text-xs font-semibold"
         style={{
           background: badge.background,
           color: badge.color,
@@ -134,8 +134,8 @@ function ExperienceCard({
       >
         {category}
       </span>
-      <h4 className="mt-5 text-xl text-[#f8f8f8]">{role}</h4>
-      <ul className="mt-4 space-y-3 text-sm leading-7 text-[rgba(248,248,248,0.7)]">
+      <h4 className="mt-5 shrink-0 text-xl text-[#f8f8f8]">{role}</h4>
+      <ul className="mt-4 min-h-0 flex-1 space-y-3 overflow-y-auto text-sm leading-7 text-[rgba(248,248,248,0.7)]" style={{ scrollbarWidth: "none" }}>
         {bullets.map((bullet) => (
           <li key={bullet} className="relative pl-5">
             <span className="absolute left-0 top-[0.7em] h-1.5 w-1.5 rounded-full bg-[#a855f7]" />
