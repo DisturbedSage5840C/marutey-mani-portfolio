@@ -182,6 +182,80 @@ export const projects: Project[] = [
     architecture:
       "Microservice architecture: Next.js 14 frontend (BFF routes, SWR polling, Recharts) -> FastAPI primary API (auth, drug lifecycle, analysis endpoints) -> Celery workers (ingestion + analysis orchestration) -> NLP FastAPI microservice (sentiment + gap pipeline) -> PostgreSQL (SQLAlchemy + Alembic migrations) + Redis (broker/result backend) + Flower (task monitoring UI).",
   },
+  {
+    slug: "amate",
+    number: "03",
+    name: "AMATE — Adaptive Multi-Agent Task Engine",
+    tagline: "Horizontally Scalable, Feedback-Driven Multi-Agent AI System",
+    summary:
+      "AMATE decomposes complex user goals into a directed acyclic graph (DAG) of parallelisable subtasks and routes each subtask to a specialised agent — Research, Code, Analysis, or Writer. Every output is scored by a three-agent Validation & QA layer (Fact-Check, Critic, Safety). Outputs that pass the 0.80 composite threshold move through Refinement, Compression, and Format agents before final delivery. All outcomes are written to a Learning Store for continuous policy improvement.",
+    problem:
+      "Single-agent LLM pipelines hit a quality ceiling: they cannot parallelise subtasks, cannot self-verify factual accuracy, cannot enforce safety policy at delivery time, and have no mechanism to retry only the weakest section of a response. Every failure requires a full re-run at full token cost.",
+    solution:
+      "A three-layer pipeline: (1) Orchestration — Intake, Planner (DAG), Router/Dispatcher with shared Redis Context Store and Task Queue. (2) Execution — horizontally scalable agent worker pool (Research, Code, Analysis, Writer) sharing a Tool Layer (APIs, vector DB, browser, calculator). (3) Validation — simultaneous scoring by Fact-Check (30%), Critic (40%), and Safety (30%) agents; composite score gate at ≥ 0.80; targeted retry on weakest section (max 2×) before full retry; Timeout Guard, exponential-backoff Retry Manager, Fallback Agent (haiku-class), circuit breaker, and human escalation queue.",
+    github: "https://github.com/DisturbedSage5840C",
+    version: "1.0",
+    generated: "May 2026",
+    stats: [
+      { value: "15", label: "Agent Prompts" },
+      { value: "4", label: "Execution Agent Types" },
+      { value: "≥ 0.80", label: "Quality Gate Score" },
+      { value: "3×", label: "Max Retry Attempts" },
+      { value: "4", label: "Implementation Phases" },
+      { value: "12 wks", label: "Build Roadmap" },
+    ],
+    tech: [
+      { label: "Python 3.12", category: "backend" },
+      { label: "asyncio", category: "backend" },
+      { label: "FastAPI", category: "backend" },
+      { label: "Anthropic Claude (Sonnet 4 / Haiku)", category: "ml" },
+      { label: "Redis Streams", category: "db" },
+      { label: "Celery", category: "backend" },
+      { label: "PostgreSQL 16", category: "db" },
+      { label: "pgvector / Pinecone", category: "db" },
+      { label: "Docker", category: "infra" },
+      { label: "Kubernetes + HPA", category: "infra" },
+      { label: "OpenTelemetry", category: "infra" },
+      { label: "Jaeger", category: "infra" },
+      { label: "Prometheus + Grafana", category: "infra" },
+      { label: "GitHub Actions + ArgoCD", category: "infra" },
+      { label: "HashiCorp Vault", category: "infra" },
+    ],
+    features: [
+      {
+        title: "DAG-Based Task Planner",
+        description:
+          "Planner Agent decomposes any goal into a dependency DAG of up to 8 subtasks, each assigned to exactly one agent type. Topological sort determines execution order; independent subtasks run in parallel via asyncio task groups.",
+      },
+      {
+        title: "Composite Scoring Gate",
+        description:
+          "Three QA agents score simultaneously: Fact-Check (30% — source citation rate, contradiction count), Critic (40% — coherence, completeness, clarity), Safety (30% — hard block on policy violation). Score ≥ 0.80 required for delivery.",
+      },
+      {
+        title: "Targeted Retry Loop",
+        description:
+          "If composite score is 0.50–0.79, the Critic identifies the weakest section and the Planner creates a targeted re-run for that section only — max 2 targeted retries before escalating to a full retry. Exponential backoff: 1 s → 2 s → 4 s.",
+      },
+      {
+        title: "Fallback & Circuit Breaker",
+        description:
+          "After 3 failed attempts, the Fallback Agent (lighter model, reduced scope) produces a '[DEGRADED OUTPUT]' response. A circuit breaker opens if P99 latency for any agent type exceeds 8 s over a 2-minute window, automatically rerouting to Fallback.",
+      },
+      {
+        title: "Token Budget Management",
+        description:
+          "Each task receives a token budget at planning time (low: 1 000 / medium: 4 000 / high: 12 000). Compressor Agent fires proactively at 80% consumption. Hard stop at 100%: output truncated gracefully with summary appended.",
+      },
+      {
+        title: "Learning Store & Observability",
+        description:
+          "All task outcomes are written async to an append-only Learning Store (nightly batch → policy updates, prompt cache). Full OpenTelemetry traces per task in Jaeger; Prometheus metrics (score distribution, retry rate, token utilisation, P50/P95/P99 latency) visualised in Grafana.",
+      },
+    ],
+    architecture:
+      "Orchestration Layer (Intake Agent → Planner Agent DAG → Router/Dispatcher, shared Redis Context Store + Task Queue) → Execution Agent Pool (Research, Code, Analysis, Writer — parallel where dependency graph allows, Tool Layer: APIs, vector DB, browser, calculator) → Aggregator Agent (confidence-weighted conflict resolution) → Validation & QA Layer (Fact-Check + Critic + Safety simultaneous, composite score gate ≥ 0.80) → Optimization Layer (Refinement → Compressor → Format & Persona, sequential) → Learning Store (async, nightly batch). Failure path: Timeout Guard + Retry Manager (exp. backoff, max 3×) → Fallback Agent → human escalation queue. Infra: Kubernetes HPA (scale-out at queue depth > 20), Redis Streams, PostgreSQL 16, pgvector/Pinecone, OpenTelemetry + Jaeger + Prometheus + Grafana, HashiCorp Vault.",
+  },
 ];
 
 export function getProject(slug: string): Project | undefined {

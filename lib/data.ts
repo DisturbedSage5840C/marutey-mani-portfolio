@@ -333,6 +333,21 @@ export const projectItems: ProjectItem[] = [
       { label: "NLP · Sentiment", accent: true },
     ],
   },
+  {
+    slug: "amate",
+    number: "03",
+    name: "AMATE — Adaptive Multi-Agent Task Engine",
+    description:
+      "Horizontally scalable, feedback-driven multi-agent AI system. Decomposes complex goals into parallelisable subtasks, routes them to specialised agents (Research, Code, Analysis, Writer), validates output via a composite rubric, and refines iteratively until a quality threshold (≥ 0.80) is met.",
+    stack: [
+      { label: "Python 3.12 · asyncio" },
+      { label: "FastAPI" },
+      { label: "Redis Streams · Celery" },
+      { label: "PostgreSQL 16" },
+      { label: "Docker · Kubernetes" },
+      { label: "Multi-Agent · LLM", accent: true },
+    ],
+  },
 ];
 
 export const researchData: ResearchData = {
