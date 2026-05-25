@@ -159,7 +159,7 @@ export const heroData: HeroData = {
   firstName: "Marutey",
   lastName: "Mani.",
   description:
-    "Engineering student navigating the intersection of technology, governance, design, and community - builder, designer, and researcher with roots in operations, media, and social impact.",
+    "First-year B.Tech (CS & AI) student at Plaksha building full-stack systems and production-grade clinical AI. Led a 20+ member cross-functional team, co-founded two NGOs, and spearheaded India's first university-staged musical.",
   ctas: [
     { label: "View Portfolio", href: person.portfolio, variant: "primary", external: true },
     { label: "GitHub", href: person.github, variant: "ghost", external: true },
@@ -182,10 +182,13 @@ export const aboutData: AboutData = {
     "Whether managing a Mars Rover project's media pipeline, founding a digital literacy initiative, or writing about crypto governance for national newspapers, I bring systems thinking to every context.",
   ],
   skills: [
-    { label: "Programming", items: "Java · Python · C/C++ · DSA" },
-    { label: "Web Dev", items: "HTML · CSS · JavaScript · Node.js" },
-    { label: "Design", items: "Figma · Canva · Adobe Premiere · DaVinci" },
-    { label: "ML / Data", items: "NLP · FastAPI · PostgreSQL · Redis" },
+    { label: "Languages", items: "Java · Python · C · C++" },
+    { label: "Backend", items: "Node.js · Express · FastAPI · Knex.js · JWT · Celery" },
+    { label: "Frontend", items: "Next.js · React Native · Tailwind CSS · HTML · Vanilla JS" },
+    { label: "Databases", items: "PostgreSQL · Redis · Docker" },
+    { label: "ML & AI", items: "XGBoost · CatBoost · SHAP · LIME · MAPIE · LSTM · GNN · NLP · Causal Discovery" },
+    { label: "MLOps", items: "PyTorch · Helm · Terraform · Kubeflow · DVC · GitHub Actions" },
+    { label: "Design", items: "Figma · Canva · Kittl · Adobe Premiere Pro · DaVinci Resolve · Photography · Videography" },
   ],
   infoRows: [
     { label: "Location", value: "Lucknow, Uttar Pradesh, India" },
@@ -210,25 +213,24 @@ export const experienceData: ExperienceData = {
 export const experienceItems: ExperienceItem[] = [
   {
     org: "Kalki Robotics - URC",
-    period: "Aug 2025 - Jan 2026",
+    period: "Aug 2025 – Jan 2026",
     category: "University",
-    role: "Management & Media",
+    role: "Management & Media Lead",
     bullets: [
-      "Managed cross-functional operations for Plaksha's Mars Rover project",
-      "Coordinated with sponsors, partners & competition bodies (URC)",
-      "Directed technical video production, reels & sponsor assets",
-      "Drafted proposals, compliance docs & formal submissions",
+      "Orchestrated operations across 5 engineering subsystems within a 20+ member Mars Rover team, driving Plaksha's first URC competition entry",
+      "Also managed media pipeline for CanSat (10th nationally, score 92.4)",
+      "Secured 3+ sponsor relationships; authored all compliance documentation, proposals, and formal submissions",
+      "Directed 5+ media assets and chaired all coordination meetings as sole operations lead",
     ],
   },
   {
     org: "Prajvalan Co.",
-    period: "Feb 2026 - Present",
+    period: "Feb 2026 – Present",
     category: "Internship",
     role: "Graphic Design Intern",
     bullets: [
-      "Design posters, branding assets & podcast visuals",
-      "Visual storytelling for an entrepreneurship community platform",
-      "Support content for networking across businesses & creators",
+      "Sole designer for end-to-end creative output — branding, podcast creatives, event posters, and campaigns — for an entrepreneurship platform connecting 100+ professionals",
+      "Directed visual identity and storytelling strategy across all channels",
     ],
   },
   {
@@ -244,52 +246,62 @@ export const experienceItems: ExperienceItem[] = [
   },
   {
     org: "EcoSentinels Foundation",
-    period: "2024 - Present",
+    period: "Jun 2024 – Present",
     category: "NGO",
     role: "Managing Director",
     bullets: [
-      "Oversee NGO operations, campaigns & environmental outreach",
-      "Manage volunteers & coordinate large-scale initiatives in Lucknow",
+      "Established foundation from inception; spearheaded 3+ environmental campaigns across Lucknow localities",
+      "Mobilised volunteer teams across waste management and community awareness drives",
     ],
   },
   {
     org: "CyberSahyog",
-    period: "2023 - Present",
+    period: "Dec 2023 – Present",
     category: "Founder",
     role: "Co-Founder & Managing Director",
     bullets: [
-      "Founded digital literacy initiative serving Lucknow communities",
-      "Developed content strategy & led grassroots outreach programs",
+      "Founded a grassroots digital literacy initiative; engineered original curriculum and executed 3+ workshops reaching 100–200 participants across multiple cities",
+      "Managed 5+ volunteers; currently scaling for second-phase launch — rebuilding volunteer infrastructure and outreach strategy from the ground up",
     ],
   },
   {
     org: "TechCurators",
-    period: "Jun-Aug 2024",
+    period: "Jun – Aug 2024",
     category: "Internship",
     role: "Video Editing Intern",
     bullets: [
-      "Edited professional marketing videos in Premiere & DaVinci Resolve",
-      "Optimized production workflows for timely delivery",
+      "Delivered broadcast-quality marketing video content for agency clients",
+      "Managed colour grading, audio mixing, and subtitling workflows to meet consistent on-time delivery standards",
     ],
   },
   {
     org: "Spotlight - Drama Club",
-    period: "Jan 2026 - Present",
+    period: "Jan 2026 – Present",
     category: "University",
-    role: "Stage & Technical Department",
+    role: "Stage Lighting Lead & Physical Design",
     bullets: [
-      "Lead lighting department operations & execution",
-      "Handle physical design and stage setup planning",
+      "Spearheaded lighting design and live technical execution for Laila Majnu — India's first full-scale musical staged within a university",
+      "Delivered a 50+ audience production with real-time lighting cues across all show nights",
+      "Directed physical set construction and stage design planning",
     ],
   },
   {
     org: "Project Udaan",
-    period: "Dec 2024 - Mar 2025",
+    period: "Dec 2024 – Mar 2025",
     category: "Social",
     role: "Head of Operations",
     bullets: [
-      "Managed volunteer activities and logistics",
-      "Led First Aid Drive and welfare initiatives in Lucknow",
+      "Directed volunteer logistics, welfare operations, and a community First Aid Drive across Lucknow under time-constrained field conditions",
+    ],
+  },
+  {
+    org: "Mental Health Awareness Programme (MHAP)",
+    period: "Nov 2023 – Feb 2025",
+    category: "Social",
+    role: "Community Coordinator",
+    bullets: [
+      "Coordinated outreach and volunteer programming for a mental health awareness initiative over 16 months",
+      "Managed event logistics, scheduling, and community engagement to widen access in underserved settings",
     ],
   },
 ];
@@ -341,10 +353,10 @@ export const projectItems: ProjectItem[] = [
       "Clinical AI decision-support platform classifying 6 neurological diseases (Alzheimer's, Parkinson's, MS, Epilepsy, ALS, Huntington's) from a 31-feature biomarker panel. 5-model calibrated ensemble achieves AUC 0.9408. Outputs 48-month LSTM trajectory forecasts, SHAP / LIME / counterfactual explanations, and Claude-generated SOAP clinical notes with FHIR R4 export.",
     stack: [
       { label: "FastAPI · Python" },
+      { label: "XGBoost · CatBoost · scikit-learn" },
+      { label: "SHAP · LIME · MAPIE" },
       { label: "React 18 · Vite" },
-      { label: "PyTorch · LightGBM" },
-      { label: "SHAP · LIME" },
-      { label: "Claude API · Kafka" },
+      { label: "Helm · Terraform · Kubeflow" },
       { label: "AUC 0.9408", accent: true },
     ],
   },
@@ -374,7 +386,8 @@ export const researchItems: ResearchItem[] = [
     status: "Ongoing",
   },
   {
-    title: "World War I: Technological Innovations and Engineering Impact",
+    title: "World War I: A Comprehensive Analysis",
+    meta: "City Montessori School — Graded Academic Paper",
     status: "Complete",
   },
   {
@@ -411,7 +424,7 @@ export const leadershipItems: LeadershipItem[] = [
   {
     label: "Design & Research",
     title: "Plaksha MUN Society",
-    subtitle: "2025-Present · 8-9 conferences · 2 awards",
+    subtitle: "2025-Present · 8+ conferences · High Commendation & Verbal Mention",
   },
   {
     label: "Head of Operations",
@@ -419,8 +432,8 @@ export const leadershipItems: LeadershipItem[] = [
     subtitle: "Dec 2024 - Mar 2025",
   },
   {
-    label: "Photographer · Guitarist",
-    title: "Photo + Music Clubs",
+    label: "Photographer · Guitarist · Vocalist",
+    title: "Photo · Music · Makerforce",
     subtitle: "Plaksha · 2025-Present",
   },
 ];
@@ -434,12 +447,20 @@ export const awardsData: AwardsData = {
 
 export const awardItems: AwardItem[] = [
   {
+    name: "AIR 7 - ICSE Class X National Merit List — Top 1% Nationwide",
+    mark: "National Rank 7",
+  },
+  {
     name: "Bronze Medal - International Youth Mathematics Competition (IYMC)",
     mark: "International",
   },
   {
-    name: "AIR 7 - ICSE Class X National Merit List",
-    mark: "National Rank 7",
+    name: "Head Boy — City Montessori School",
+    mark: "2023 – 2025",
+  },
+  {
+    name: "McKinsey Forward Program — Problem Solving, Leadership & Communication",
+    mark: "Completed",
   },
   {
     name: "AIR 1518 - NSTSE (Class 9)",
