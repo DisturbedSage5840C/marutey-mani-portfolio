@@ -314,7 +314,7 @@ export default function SceneBackground() {
           </>
         )}
         <EffectComposer>
-          <Bloom luminanceThreshold={0.08} luminanceSmoothing={0.85} intensity={isMobile ? 0.5 : 1.1} blendFunction={BlendFunction.ADD} />
+          <Bloom luminanceThreshold={0.28} luminanceSmoothing={0.9} intensity={isMobile ? 0.25 : 0.5} blendFunction={BlendFunction.ADD} />
           <ChromaticAberration
             blendFunction={BlendFunction.NORMAL}
             offset={!isMobile && !reducedMotion ? new THREE.Vector2(0.0012, 0.0012) : new THREE.Vector2(0, 0)}

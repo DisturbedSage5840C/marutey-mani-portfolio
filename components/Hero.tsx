@@ -101,11 +101,18 @@ export default function Hero() {
       }}
     >
       <HeroSphere />
-      <div ref={glareRef} className="pointer-events-none absolute inset-0 z-[1]" />
+      {/* Gradient shield — keeps left text area dark regardless of 3D bloom */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[1]"
+        style={{
+          background: "linear-gradient(to right, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.75) 38%, rgba(8,8,8,0.2) 58%, transparent 72%)",
+        }}
+      />
+      <div ref={glareRef} className="pointer-events-none absolute inset-0 z-[2]" />
 
       <div className="relative z-10 mx-auto w-full max-w-[1400px]">
-        <div className="mb-6 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-gold">
-          <span className="h-px w-10 bg-gold" />
+        <div className="mb-6 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-[#a855f7]">
+          <span className="h-px w-10 bg-[#a855f7]" />
           <span>{heroData.eyebrow}</span>
         </div>
 
