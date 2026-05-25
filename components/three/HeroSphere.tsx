@@ -152,7 +152,7 @@ export default function HeroSphere() {
   const isMobile = typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-0">
+    <div className="pointer-events-none absolute right-0 top-0 h-full w-[60%] z-0">
       <Canvas gl={{ alpha: true, antialias: true }} camera={{ position: [0, 0, 4.5] }}>
         <pointLight position={[8, 8, 4]}   color="#7c3aed" intensity={2.2} />
         <pointLight position={[-8, -6, -4]} color="#06b6d4" intensity={1.6} />
