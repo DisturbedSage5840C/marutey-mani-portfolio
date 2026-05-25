@@ -308,14 +308,14 @@ export const projectItems: ProjectItem[] = [
     number: "01",
     name: "University Housekeeping Management System",
     description:
-      "AI-powered campus hygiene tracking with ML-based complaint categorisation, NLP sentiment analysis, and predictive maintenance. Features role-based dashboards for Admin, Staff, and Students.",
+      "Role-based campus housekeeping platform across 5 university buildings. Supervisors mark facilities cleaned with mandatory photo proof, submit per-washroom hygiene checklists (6 line-items each), and manage supply inventory. Python AI microservice auto-classifies complaints and generates response suggestions. Auto-resets every 8 hours for shift discipline.",
     stack: [
-      { label: "Node.js" },
-      { label: "Python (FastAPI)" },
-      { label: "PostgreSQL" },
+      { label: "Node.js · Express" },
+      { label: "PostgreSQL (Neon)" },
       { label: "Redis" },
-      { label: "Docker" },
-      { label: "ML · NLP", accent: true },
+      { label: "React Native · Expo" },
+      { label: "Python AI Service" },
+      { label: "Knex.js · JWT", accent: true },
     ],
   },
   {
@@ -331,6 +331,21 @@ export const projectItems: ProjectItem[] = [
       { label: "Redis" },
       { label: "Celery" },
       { label: "NLP · Sentiment", accent: true },
+    ],
+  },
+  {
+    slug: "neurosynth",
+    number: "03",
+    name: "NeuroSynth",
+    description:
+      "Clinical AI decision-support platform classifying 6 neurological diseases (Alzheimer's, Parkinson's, MS, Epilepsy, ALS, Huntington's) from a 31-feature biomarker panel. 5-model calibrated ensemble achieves AUC 0.9408. Outputs 48-month LSTM trajectory forecasts, SHAP / LIME / counterfactual explanations, and Claude-generated SOAP clinical notes with FHIR R4 export.",
+    stack: [
+      { label: "FastAPI · Python" },
+      { label: "React 18 · Vite" },
+      { label: "PyTorch · LightGBM" },
+      { label: "SHAP · LIME" },
+      { label: "Claude API · Kafka" },
+      { label: "AUC 0.9408", accent: true },
     ],
   },
 ];
