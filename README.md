@@ -1,160 +1,155 @@
-# Marutey Mani - Portfolio
+# Marutey Mani — Portfolio
 
 <div align="center">
-  <img src="public/images/marutey_photo.jpg" alt="Marutey Mani" width="320" />
+  <img src="public/images/marutey_photo.jpg" alt="Marutey Mani" width="300" />
 
-  <h3>CS & AI Student | Operator | Designer | Researcher</h3>
+  <h3>CS & AI Student · Operator · Designer · Researcher</h3>
   <p>
     Plaksha University, Mohali<br/>
     Building at the intersection of engineering, operations, design, and social impact.
   </p>
 
   <p>
+    <a href="https://marutey-mani-portfolio.vercel.app"><img alt="Live Site" src="https://img.shields.io/badge/Live%20Site-000000?style=for-the-badge&logo=vercel&logoColor=white" /></a>
     <a href="https://www.linkedin.com/in/marutey-mani-7ab79b283/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
     <a href="https://github.com/DisturbedSage5840C"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-111111?style=for-the-badge&logo=github&logoColor=white" /></a>
-    <a href="https://drive.google.com/drive/folders/1bQgFxzm_B3OMxLi-ZVbJGiARwwHuI-s8?usp=sharing"><img alt="Portfolio Drive" src="https://img.shields.io/badge/Portfolio%20Drive-C8A96E?style=for-the-badge&logo=googledrive&logoColor=111111" /></a>
   </p>
 </div>
 
 ---
 
-## About
+## Overview
 
-This is my personal portfolio built with Next.js 14 App Router, TypeScript, Tailwind CSS, and Framer Motion.
-
-It showcases:
-- Leadership and operational work across student, NGO, and social initiatives
-- Project engineering experience in full-stack + AI systems
-- Research and writing output, including publication in The Shillong Times
-- Creative showcase placeholders for design, photography, reels, and videography
+Personal portfolio built with Next.js 14 App Router — dark, immersive, 3D-driven. Every section uses scroll-triggered GSAP animations, a morphing WebGL particle field, and floating wireframe objects as a persistent background scene.
 
 ---
 
-## Live Sections
+## Sections
 
-- Hero
-- About (with portrait panel)
-- Experience
-- Projects
-- Research & Writing
-- Leadership
-- Awards
-- Contact
-- Dynamic Project Detail Pages
-- Showcase Page
+| Section | Description |
+|---|---|
+| **Hero** | Full-screen with distorted 3D sphere, orbiting ring, particle halo, GSAP character-by-character name reveal |
+| **About** | Three-column layout — bio, portrait, info table with tilt effect |
+| **Experience** | Horizontal scroll rail (GSAP pinned) — 8 cards sliding right-to-left as you scroll down |
+| **Projects** | 2-column grid with scroll-triggered stagger reveal, 3D tilt on hover |
+| **Research & Writing** | Typewriter reveals on scroll, published article link |
+| **Leadership** | 3-column grid with hover accent bar, stagger animation |
+| **Awards** | Horizontal row list with slide-in animation, purple→cyan hover |
+| **Contact** | Clean link grid |
+| **Project Detail Pages** | `/projects/[slug]` — stats bar, problem/solution/architecture, features grid, tech stack with category legend |
+| **Showcase** | `/showcase` — masonry 3-column grid, filterable by category |
 
 ---
 
 ## Featured Projects
 
-### 1) University Housekeeping Management System
-- AI-powered campus hygiene compliance tracking
-- Role-based dashboards and complaint prioritization
-- NLP pipeline and predictive maintenance concepts
+### 1. University Housekeeping Management System
+AI-powered campus hygiene compliance tracker — role-based dashboards (Admin / Staff / Student), ML complaint classification (12 categories, ~85% accuracy), NLP sentiment pipeline, 2-way photo verification, predictive maintenance. 59 source files, 11,500+ lines, 6 Docker services.
 
-### 2) RWE Tracker
-- Real-world evidence perception platform
-- Multi-source ingestion and async analysis workflows
-- Gap analysis across seven dimensions
+**Stack:** Node.js · Express · FastAPI · Python · PostgreSQL 16 · Redis · Docker · scikit-learn · spaCy · React Native
 
----
+### 2. RWE Tracker — Real-World Evidence Platform
+Quantifies the gap between clinical trial claims and real-world patient perception for monitored drugs. Ingests from OpenFDA, ClinicalTrials.gov, and Reddit asynchronously; NLP pipeline (VADER + RoBERTa + SentenceTransformers); gap analysis across 7 clinical dimensions.
 
-## Research Highlight
-
-- How Crypto Grew Up: Why It Might Finally Belong Inside Government
-  - Published in The Shillong Times
-  - Link: https://theshillongtimes.com/2025/11/27/how-crypto-grew-up-why-it-might-finally-belong-inside-government/
+**Stack:** Next.js 14 · FastAPI · Celery · PostgreSQL · Redis · RoBERTa · Docker · GitHub Actions
 
 ---
 
 ## Tech Stack
 
-- Next.js 14 (App Router)
+### Framework & Language
+- Next.js 14 (App Router, SSG)
 - TypeScript
 - Tailwind CSS v3
-- Framer Motion
-- Google Fonts (DM Serif Display, Syne, IBM Plex Mono)
+
+### Animation & 3D
+- GSAP + ScrollTrigger — scroll-driven animations, horizontal pin, stagger reveals
+- Three.js + React Three Fiber — WebGL particle morphing field, floating wireframe objects
+- `@react-three/postprocessing` — Bloom, Chromatic Aberration, Vignette
+- Framer Motion — page transitions, Showcase grid
+- Lenis — smooth scroll integrated with GSAP ticker
+
+### Fonts
+- Space Grotesk (headings / body)
+- Space Mono (labels, tags, monospaced UI)
+- DM Serif Display (loaded, serif accent)
+
+### Deployment
+- Vercel (auto-deploy on push to `main`)
+- Production: https://marutey-mani-portfolio.vercel.app
 
 ---
 
-## Live Website
+## Project Structure
 
-This portfolio is live on Vercel:
-
-- Production URL: https://marutey-mani-portfolio.vercel.app
-- Platform: Vercel (Next.js optimized hosting)
-
-### Deployment Workflow
-
-- The repository is connected to Vercel.
-- Every push to the `main` branch automatically triggers a fresh production deployment.
-- Vercel handles SSL/HTTPS, global CDN delivery, and build/runtime optimization.
-
-### Notes
-
-- If new media is added to `public/`, a normal push to GitHub is enough to publish it live.
-- If needed, a custom domain can be connected directly from the Vercel project dashboard.
+```
+app/
+  layout.tsx              # Fonts, SceneBackground, Nav, LenisProvider
+  page.tsx                # Home — all sections composed
+  template.tsx
+  projects/
+    [slug]/page.tsx       # Dynamic SSG project detail pages
+  showcase/
+    page.tsx              # Showcase gallery page
+components/
+  Hero.tsx                # GSAP name reveal, count-up stats, magnetic CTAs
+  About.tsx               # Portrait panel, skills grid
+  Experience.tsx          # Horizontal scroll rail (GSAP pin)
+  Projects.tsx            # 2-col grid, scroll-triggered stagger
+  ProjectPage.tsx         # Project detail renderer
+  Research.tsx            # Typewriter reveal items
+  Leadership.tsx          # 3-col grid with hover effects
+  Awards.tsx              # Row list with slide-in animation
+  Showcase.tsx            # Masonry grid, category filter
+  Nav.tsx                 # Fixed nav, scroll-aware blur
+  Contact.tsx
+  Footer.tsx
+  CursorFx.tsx            # Custom cursor with trail
+  providers/
+    LenisProvider.tsx     # Lenis + GSAP ScrollTrigger sync
+    PageTransition.tsx
+    RouteTransitionProvider.tsx
+  three/
+    SceneBackground.tsx   # Fixed WebGL canvas — morphing particle field
+                          # + floating wireframe torusKnot, icosahedron, octahedron
+    HeroSphere.tsx        # Hero-local canvas — distorted sphere + orbit ring + halo
+  ui/
+    RevealOnScroll.tsx
+lib/
+  data.ts                 # All section content (hero, about, experience, projects, …)
+  projects.ts             # Full project detail data (slug, stats, tech, features)
+  showcase.ts             # Showcase items and categories
+public/
+  images/
+    marutey_photo.jpg
+```
 
 ---
 
 ## Local Setup
 
-### 1. Clone
-
 ```bash
+# Clone
 git clone https://github.com/DisturbedSage5840C/marutey-mani-portfolio.git
 cd marutey-mani-portfolio
-```
 
-### 2. Install
-
-```bash
+# Install
 npm install
-```
 
-### 3. Run development server
-
-```bash
+# Dev server
 npm run dev
-```
+# → http://localhost:3000
 
-Open http://localhost:3000
-
-### 4. Production build
-
-```bash
+# Production build
 npm run build
 npm run start
 ```
 
 ---
 
-## Project Structure
+## Deployment
 
-```text
-app/
-  projects/[slug]/page.tsx
-  showcase/page.tsx
-  layout.tsx
-  template.tsx
-  page.tsx
-components/
-  About.tsx
-  Hero.tsx
-  Nav.tsx
-  Projects.tsx
-  ProjectPage.tsx
-  Showcase.tsx
-  CursorFx.tsx
-  ...
-lib/
-  data.ts
-  projects.ts
-  showcase.ts
-  animations.ts
-public/
-  images/marutey_photo.jpg
-```
+Connected to Vercel. Every push to `main` triggers an automatic production deployment with full SSG rebuild.
 
 ---
 
@@ -166,6 +161,4 @@ public/
 
 ---
 
-## License
-
-This project is for personal portfolio use.
+*Personal portfolio — not open for reuse without permission.*

@@ -22,3 +22,6 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 .vercel
+
+# Local-only clutter — not for GitHub
+unwanted_in_github/
