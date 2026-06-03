@@ -183,11 +183,11 @@ export const aboutData: AboutData = {
   ],
   skills: [
     { label: "Languages", items: "Java · Python · C · C++" },
-    { label: "Backend", items: "Node.js · Express · FastAPI · Knex.js · JWT · Celery" },
+    { label: "Backend", items: "Node.js · Express · FastAPI · Knex.js · JWT · Celery · WebSocket" },
     { label: "Frontend", items: "Next.js · React Native · Tailwind CSS · HTML · Vanilla JS" },
-    { label: "Databases", items: "PostgreSQL · Redis · Docker" },
-    { label: "ML & AI", items: "XGBoost · CatBoost · SHAP · LIME · MAPIE · LSTM · GNN · NLP · Causal Discovery" },
-    { label: "MLOps", items: "PyTorch · Helm · Terraform · Kubeflow · DVC · GitHub Actions" },
+    { label: "Databases", items: "PostgreSQL · pgvector · Redis · Docker" },
+    { label: "ML & AI", items: "XGBoost · CatBoost · SHAP · LIME · MAPIE · LSTM · GNN · NLP · RAG · BM25 · Semantic Search · Causal Discovery" },
+    { label: "MLOps", items: "PyTorch · Helm · Terraform · Kubeflow · Prefect · Playwright · DVC · GitHub Actions · Fly.io" },
     { label: "Design", items: "Figma · Canva · Kittl · Adobe Premiere Pro · DaVinci Resolve · Photography · Videography" },
   ],
   infoRows: [
@@ -316,8 +316,23 @@ export const projectsData: ProjectsData = {
 
 export const projectItems: ProjectItem[] = [
   {
-    slug: "ilgc-tracker",
+    slug: "racejudge",
     number: "01",
+    name: "RaceJudge",
+    description:
+      "1,085 FIA stewards' decision PDFs scraped, parsed, and evidence-linked to race control messages, team radio transcripts (ASR-diarised), and lap telemetry across 7 F1 seasons (2019–2025). Hybrid BM25 + BGE-M3 semantic search over a pgvector HNSW index. Calibrated XGBoost 7-class penalty predictor with MAPIE conformal intervals and RAG rationale generation. Live WebSocket race mode surfaces precedents in under 5 seconds on investigation flags.",
+    stack: [
+      { label: "FastAPI · Python" },
+      { label: "XGBoost · BGE-M3 · BM25" },
+      { label: "pgvector · HNSW" },
+      { label: "Next.js 15 · TypeScript" },
+      { label: "Playwright · Prefect" },
+      { label: "1,085 FIA Decisions", accent: true },
+    ],
+  },
+  {
+    slug: "ilgc-tracker",
+    number: "02",
     name: "University Housekeeping Management System",
     description:
       "Role-based campus housekeeping platform across 5 university buildings. Supervisors mark facilities cleaned with mandatory photo proof, submit per-washroom hygiene checklists (6 line-items each), and manage supply inventory. Python AI microservice auto-classifies complaints and generates response suggestions. Auto-resets every 8 hours for shift discipline.",
@@ -332,7 +347,7 @@ export const projectItems: ProjectItem[] = [
   },
   {
     slug: "rwe-tracker",
-    number: "02",
+    number: "03",
     name: "RWE Tracker - Real-World Evidence Platform",
     description:
       "Analyses the gap between clinical trial claims and real-world patient sentiment. Integrates NLP pipelines, sentiment models, and multi-source ingestion from OpenFDA, Reddit, and ClinicalTrials. Async processing via FastAPI + Celery.",
@@ -347,7 +362,7 @@ export const projectItems: ProjectItem[] = [
   },
   {
     slug: "neurosynth",
-    number: "03",
+    number: "04",
     name: "NeuroSynth",
     description:
       "Clinical AI decision-support platform classifying 6 neurological diseases (Alzheimer's, Parkinson's, MS, Epilepsy, ALS, Huntington's) from a 31-feature biomarker panel. 5-model calibrated ensemble achieves AUC 0.9408. Outputs 48-month LSTM trajectory forecasts, SHAP / LIME / counterfactual explanations, and Claude-generated SOAP clinical notes with FHIR R4 export.",

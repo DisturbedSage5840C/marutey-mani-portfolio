@@ -32,8 +32,90 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: "ilgc-tracker",
+    slug: "racejudge",
     number: "01",
+    name: "RaceJudge",
+    tagline: "F1 Stewards' Precedent Engine: Semantic Search, Penalty Prediction & Live Race Intelligence",
+    summary:
+      "A production-grade F1 stewardship intelligence platform built from scratch — 1,085 FIA stewards' decision PDFs scraped, parsed, and structured across seven seasons (2019–2025), linked to team radio transcripts, race control messages, and lap telemetry. Hybrid BM25 + BGE-M3 semantic search over a pgvector HNSW index, a calibrated XGBoost 7-class penalty predictor, a RAG explanation layer, and a live WebSocket race mode delivering precedents in under 5 seconds on investigation flags. 132 pytest tests passing. Tiered monetisation: Free / $29 Pro / $499 Team / Enterprise.",
+    problem:
+      "F1 stewardship decisions are inconsistent and opaque — fans, journalists, and teams have no way to query historical precedents, understand why a penalty was or wasn't issued, or predict outcomes from incident descriptions. The FIA publishes decisions as individual PDFs with no cross-referencing, no searchability, and no link to the race data that caused the incident.",
+    solution:
+      "RaceJudge ingests every FIA stewards' decision PDF across 7 seasons, links each incident to race control messages, team radio (ASR-transcribed and speaker-diarised), and lap telemetry — building the only searchable, evidence-linked FIA decision corpus in existence. A hybrid retrieval stack (BM25 + BGE-M3 dense embeddings, RRF fusion) returns the most relevant precedents for any incident description. A calibrated XGBoost model predicts the most likely penalty across 7 classes. A RAG layer generates per-prediction rationales grounded in actual precedent text. A live WebSocket mode listens for investigation flags and surfaces top-5 precedents in real time during a race.",
+    github: "https://github.com/racejudge-hq/racejudge-web",
+    version: "1.0.0-beta",
+    generated: "03 June 2026",
+    stats: [
+      { value: "1,085", label: "FIA Decision PDFs" },
+      { value: "7", label: "Seasons Covered" },
+      { value: "< 5s", label: "Live Precedent Delivery" },
+      { value: "132", label: "Pytest Tests Passing" },
+      { value: "7-class", label: "Penalty Predictor" },
+      { value: "20+", label: "API Endpoints" },
+    ],
+    tech: [
+      { label: "Python 3.11", category: "backend" },
+      { label: "FastAPI", category: "backend" },
+      { label: "Celery", category: "backend" },
+      { label: "WebSocket + Redis Pub/Sub", category: "backend" },
+      { label: "Playwright", category: "backend" },
+      { label: "pdfplumber", category: "backend" },
+      { label: "Next.js 15 App Router", category: "frontend" },
+      { label: "TypeScript", category: "frontend" },
+      { label: "Tailwind CSS", category: "frontend" },
+      { label: "PostgreSQL + pgvector HNSW", category: "db" },
+      { label: "Redis", category: "db" },
+      { label: "Faster-Whisper ASR", category: "ml" },
+      { label: "pyannote (diarisation)", category: "ml" },
+      { label: "BGE-M3 (dense embeddings)", category: "ml" },
+      { label: "BM25 + RRF (k=60)", category: "ml" },
+      { label: "XGBoost (7-class)", category: "ml" },
+      { label: "MAPIE (calibration)", category: "ml" },
+      { label: "LayoutLMv3", category: "ml" },
+      { label: "RAG (claude-haiku)", category: "ml" },
+      { label: "Terraform", category: "infra" },
+      { label: "Fly.io", category: "infra" },
+      { label: "Prefect", category: "infra" },
+      { label: "GitHub Actions CI", category: "infra" },
+    ],
+    features: [
+      {
+        title: "1,085-Document FIA Corpus with Evidence Linking",
+        description:
+          "A Playwright + pdfplumber pipeline scraped, parsed, and structured every FIA stewards' decision PDF across 7 seasons (2019–2025) with SHA-256 deduplication. Each decision is linked to its race control messages, team radio transcripts (Faster-Whisper ASR + pyannote speaker diarisation), and lap telemetry via OpenF1 and FastF1 APIs — building the only searchable, multi-modal FIA decision corpus in existence.",
+      },
+      {
+        title: "Hybrid Semantic Search: BM25 + BGE-M3 + RRF",
+        description:
+          "Retrieval fuses BM25 keyword scoring with BGE-M3 1024-dimensional dense embeddings over a pgvector HNSW index (m=16, ef_construction=200) using Reciprocal Rank Fusion (k=60). Targeting Recall@10 ≥ 0.80. Any incident description returns the most relevant historical precedents ranked by hybrid relevance score.",
+      },
+      {
+        title: "Calibrated XGBoost 7-Class Penalty Predictor",
+        description:
+          "A time-split cross-validated XGBoost classifier predicts the most likely stewards' outcome across 7 penalty classes. Trained with ECE and Macro-F1 validation gates (target: Macro-F1 ≥ 0.65, ECE < 0.05). Isotonic calibration applied post-training. MAPIE conformal prediction intervals provide uncertainty-aware outputs on every prediction.",
+      },
+      {
+        title: "RAG Precedent Rationale Layer",
+        description:
+          "A retrieval-augmented generation layer (claude-haiku) takes the top-k retrieved precedents and the predicted penalty class and generates a structured explanation grounded in actual FIA decision text — telling the user not just what the likely outcome is, but why, with citations to specific historical cases.",
+      },
+      {
+        title: "Live Race Mode: WebSocket + Redis Pub/Sub",
+        description:
+          "A WebSocket endpoint backed by Redis Pub/Sub listens for live investigation flags during a race. On trigger, the system queries the retrieval stack and returns the top-5 most relevant historical precedents in under 5 seconds — giving analysts and broadcasters real-time stewardship context as incidents unfold.",
+      },
+      {
+        title: "Full Next.js 15 App Router Web Platform",
+        description:
+          "10+ pages including live race mode, precedent search, penalty prediction form, consistency heat-maps across drivers and teams, driver profiles, and an FIA guideline browser. Backed by a FastAPI service with 9 routers and 20+ endpoints. 132 pytest tests passing with green CI across ruff, mypy, tsc, and Next.js build. Tiered monetisation architecture: Free / $29 Pro / $499 Team / Enterprise.",
+      },
+    ],
+    architecture:
+      "Data pipeline: Playwright scraper → pdfplumber PDF parser → SHA-256 dedup → PostgreSQL corpus store → Faster-Whisper ASR + pyannote diarisation for team radio → OpenF1 + FastF1 telemetry linker → pgvector HNSW index (BGE-M3 embeddings, vector(1024), m=16, ef_construction=200). Prediction stack: BM25 index + pgvector ANN search → RRF fusion (k=60) → XGBoost 7-class classifier → MAPIE calibration → claude-haiku RAG rationale. Live mode: FastAPI WebSocket endpoint → Redis Pub/Sub → retrieval query → top-5 results streamed to client in < 5s. Orchestration: Prefect for pipeline scheduling, GitHub Actions CI (ruff + mypy + tsc + pytest 132 tests), Terraform + Fly.io deployment. Frontend: Next.js 15 App Router, 10+ pages, TypeScript, Tailwind CSS.",
+  },
+  {
+    slug: "ilgc-tracker",
+    number: "02",
     name: "University Housekeeping Management System",
     tagline: "Role-Based Campus Housekeeping & Facility Compliance Platform",
     summary:
@@ -108,7 +190,7 @@ export const projects: Project[] = [
   },
   {
     slug: "rwe-tracker",
-    number: "02",
+    number: "03",
     name: "RWE Tracker",
     tagline: "Real-World Evidence Perception Platform",
     summary:
@@ -183,7 +265,7 @@ export const projects: Project[] = [
   },
   {
     slug: "neurosynth",
-    number: "03",
+    number: "04",
     name: "NeuroSynth",
     tagline: "Clinical AI Decision Support Platform for Neurological Disease Diagnosis",
     summary:
